@@ -34,7 +34,7 @@ public class FileReaderService {
 
 		while (linReader.hasNext()) {
 			String line = linReader.nextLine();
-			symbols.add(line);
+			symbols.add("%22" + line + "%22");
 		}
 		linReader.close();
 		yql = StringUtils.collectionToCommaDelimitedString(symbols);

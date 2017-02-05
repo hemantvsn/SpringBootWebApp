@@ -40,7 +40,7 @@ public class FinanceServiceImpl implements FinanceService {
 	
 	private List<StockInfo> getStocksInfoYahooAPI() throws ClientProtocolException, IOException {
 		HttpClient client = HttpClientBuilder.create().build();
-		String query = "select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22GOOG%22,%20%22AKR%22)";
+		String query = "select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("+readerService.getYql()+")";
 		HttpGet request = new HttpGet("https://query.yahooapis.com/v1/public/yql?q="+query+"&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=");
 		HttpResponse response = client.execute(request);
 		return comprehendResponse(response);

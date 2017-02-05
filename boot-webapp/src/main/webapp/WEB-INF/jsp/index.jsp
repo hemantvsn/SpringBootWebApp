@@ -7,7 +7,9 @@
 	<div class="container">
 	<br>
 		<code>${author}- PUBMATIC-${version}</code>
-		<button type="button" class="btn btn-primary">GENERATE EXCEL</button>
+		<form action="/excel-report" method="get">
+			<button type="submit" class="btn btn-primary" >GENERATE EXCEL</button>
+		</form>
 
 		<table class="table table-striped">
 			<thead>

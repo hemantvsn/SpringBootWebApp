@@ -1,5 +1,10 @@
 package com.hemant.boot.controllers;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.hemant.boot.service.FinanceService;
+import com.hemant.boot.service.ReportsUtil;
 
 
 /**
@@ -37,6 +43,15 @@ public class HomeController {
 		model.addAttribute("version", "0.0.1");
 		model.addAttribute("stocks", financeService.getStockInfos());
 		return "index";
+	}
+	
+	@RequestMapping(value = "/excel-report", method = RequestMethod.GET)
+	public void getExcelReport(Model model, HttpServletResponse response) throws IOException {
+		ByteArrayOutputStream stream = (ByteArrayOutputStream) ReportsUtil.getStockReportXLS(financeService.getStockInfos());
+		response.setHeader("Content-Disposition", "attachment;filename=" + "stock-report.xls");
+		response.getOutputStream().write(stream.toByteArray());
+		stream.flush();
+		stream.close();
 	}
 
 }

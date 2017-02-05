@@ -19,11 +19,17 @@ import org.springframework.core.io.ClassPathResource;
 @EnableCaching
 public class Config extends SpringBootServletInitializer {
 
+	/**
+     * Used when run as WAR
+     */
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Config.class);
 	}
 
+	/**
+     * Used when run as JAR
+     */
 	public static void main(String[] args) {
 		SpringApplication.run(Config.class, args);
 	}

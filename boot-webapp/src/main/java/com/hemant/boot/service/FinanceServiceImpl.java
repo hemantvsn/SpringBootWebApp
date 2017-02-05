@@ -9,7 +9,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonFactory;
@@ -20,20 +23,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.hemant.boot.model.StockInfo;
 
-@Service
+@Service("financeService")
 public class FinanceServiceImpl implements FinanceService {
+	private static final Logger LOG = LoggerFactory.getLogger(FinanceServiceImpl.class);
 
 	@Autowired
 	FileReaderService readerService;
 
 	@Override
+	@Cacheable("stocksCache")
 	public List<StockInfo> getStockInfos() {
 		List<StockInfo> stocks;
+		long startTime = System.currentTimeMillis();
+		LOG.info("Fetching info from YAHOO BUSINESS API");
 		try {
 			stocks = getStocksInfoYahooAPI();
 		} catch (Exception e) {
 			throw new IllegalStateException("Unable to query YAHOO FINANCE API", e);
 		}
+		long endTime = System.currentTimeMillis();
+		long duration = (endTime - startTime)/1000;
+		LOG.info("Info fetched for {} stocks in ### {} seconds", stocks.size(), duration);
 		return stocks;
 		
 	}

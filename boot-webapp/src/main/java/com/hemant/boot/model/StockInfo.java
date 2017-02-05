@@ -1,11 +1,17 @@
 package com.hemant.boot.model;
 
+import java.io.Serializable;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class StockInfo {
+public class StockInfo implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -346325450725372141L;
 	private String symbol;
 	@JsonProperty("Open")
 	private double price = -1;
